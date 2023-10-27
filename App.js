@@ -2,8 +2,10 @@ import { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 import { useFonts } from "expo-font";
 import { hideAsync } from "expo-splash-screen";
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
 
-import Login from "./src/screens/login-screen";
+import LoginScreen from "./src/screens/login-screen";
+import HomeScreen from "./src/screens/home-screen";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -29,16 +31,23 @@ export default function App() {
   }
 
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <Login />
-    </View>
+    <ClerkProvider
+      publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY}
+    >
+      <View style={styles.container} onLayout={onLayoutRootView}>
+        <SignedIn>
+          <HomeScreen />
+        </SignedIn>
+        <SignedOut>
+          <LoginScreen />
+        </SignedOut>
+      </View>
+    </ClerkProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
   },
 });

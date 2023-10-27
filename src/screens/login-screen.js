@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import {
   View,
   SafeAreaView,
@@ -5,11 +6,35 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import { maybeCompleteAuthSession } from "expo-web-browser";
+import { useOAuth } from "@clerk/clerk-expo";
+import { useWarmUpBrowser } from "../hooks/warm-up-browser";
 
 /* Styles */
 import { styles } from "./styles/login-screen.styles";
 
-export default function Login() {
+maybeCompleteAuthSession();
+
+export default function LoginScreen() {
+  useWarmUpBrowser();
+
+  const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
+
+  const onGooglePress = useCallback(async () => {
+    try {
+      const { createdSessionId, signIn, signUp, setActive } =
+        await startOAuthFlow();
+
+      if (createdSessionId) {
+        setActive({ session: createdSessionId });
+      } else {
+        // Use signIn or signUp for next steps such as MFA
+      }
+    } catch (err) {
+      console.error("OAuth error", err);
+    }
+  }, []);
+
   return (
     <SafeAreaView style={styles.ScreenContainer}>
       <Image
@@ -24,10 +49,7 @@ export default function Login() {
           Book appointments effortlessly and manager your health journey
         </Text>
 
-        <TouchableOpacity
-          onPress={() => console.log("Clicked")}
-          style={styles.Button}
-        >
+        <TouchableOpacity onPress={onGooglePress} style={styles.Button}>
           <Text style={styles.ButtonText}>Login With Google</Text>
         </TouchableOpacity>
       </View>
