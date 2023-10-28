@@ -12,7 +12,7 @@ const { width } = Dimensions.get("screen");
 export const styles = StyleSheet.create({
   ScreenContainer: {
     flex: 1,
-    alignItems: "center",
+    // alignItems: "center",
   },
   Button: {
     padding: SPACING.space_12,
