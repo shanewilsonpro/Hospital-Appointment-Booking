@@ -1,11 +1,12 @@
 import { useCallback } from "react";
-import { StyleSheet, View } from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import { useFonts } from "expo-font";
 import { hideAsync } from "expo-splash-screen";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-expo";
+import { NavigationContainer } from "@react-navigation/native";
 
 import LoginScreen from "./src/screens/login-screen";
-import HomeScreen from "./src/screens/home-screen";
+import TabNavigation from "./src/navigators/tab-navigation";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -34,14 +35,16 @@ export default function App() {
     <ClerkProvider
       publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY}
     >
-      <View style={styles.container} onLayout={onLayoutRootView}>
+      <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
         <SignedIn>
-          <HomeScreen />
+          <NavigationContainer>
+            <TabNavigation />
+          </NavigationContainer>
         </SignedIn>
         <SignedOut>
           <LoginScreen />
         </SignedOut>
-      </View>
+      </SafeAreaView>
     </ClerkProvider>
   );
 }
