@@ -11,4 +11,6 @@ const axiosInstance = axios.create({
 
 const getSlider = () => axiosInstance.get("/sliders?populate=*");
 
-export default { getSlider };
+const getCategories = () => axiosInstance.get("/categories?populate=*");
+
+export default { getSlider, getCategories };

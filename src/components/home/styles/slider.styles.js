@@ -5,12 +5,12 @@ const { width } = Dimensions.get("window");
 
 export const styles = StyleSheet.create({
   Container: {
-    display: "flex",
-    flex: 1,
+    // display: "flex",
+    // flex: 1,
     marginTop: SPACING.space_12,
     marginHorizontal: SPACING.space_16,
     maxWidth: width * 0.92,
-    alignSelf: "center",
+    // alignSelf: "center",
   },
   Image: {
     width: width * 0.9,
